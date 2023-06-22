@@ -2,7 +2,7 @@
 pragma solidity 0.8.20;
 
 contract Land {
-    address public owner;
+    address owner;
     address[] allOwners;
     OwnerDetails ownerDetails;
 
@@ -10,6 +10,11 @@ contract Land {
         string fullName;
         uint age;
         uint aadharId;
+    }
+
+    struct ShowableOwnerDetails {
+        string fullName;
+        uint age;
     }
 
     constructor(string memory fullName, uint age, uint aadharId) {
@@ -29,7 +34,7 @@ contract Land {
 
         allOwners.push(newOwnerId);
 
-        this.changeMyDetails(fullName, age, aadharId);
+        ownerDetails = OwnerDetails({fullName: fullName, age: age, aadharId: aadharId});
         owner = newOwnerId;
     }
 
@@ -43,6 +48,10 @@ contract Land {
 
     function changeMyDetails(string memory fullName, uint age, uint aadharId) public onlyOwner{
         ownerDetails = OwnerDetails({fullName: fullName, age: age, aadharId: aadharId});
+    }
+
+    function whoIsTheOwner() view public returns(ShowableOwnerDetails memory){
+        return ShowableOwnerDetails(ownerDetails.fullName, ownerDetails.age);
     }
 
 }

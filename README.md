@@ -45,6 +45,34 @@ npx hardhat compile
 npx hardhat run --network sepolia scripts/deploy.js
 ```
 
+# Testing the Deployed Contract
+
+To test a deployed contract by doing the steps above, You need to use Land UI -
+a testing place for contracts.
+
+Land UI is made with React and Vite, so you need to `cd` into `land_ui` and
+start the server.
+
+Here are the steps to do that:
+
+## `cd`
+
+```bash
+cd land_ui
+```
+
+## Install Packages
+
+```bash
+npm i
+```
+
+## Start the Server
+
+```bash
+npm run dev
+```
+
 # YouTube Videos
 
 If you're interested in learning Solidity and smart contracts, I found these

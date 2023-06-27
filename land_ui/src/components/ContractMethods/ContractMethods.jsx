@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import MetaMaskSDK from "@metamask/sdk";
 
+const MMSDK = new MetaMaskSDK();
 const rpcUrl = import.meta.env.VITE_RPC_URL;
 const web3 = new Web3(rpcUrl);
 
@@ -21,10 +23,11 @@ const ContractMethods = (props) => {
 	const handleMethodSubmit = async (methodName, params, stateMutability) => {
 		try {
 			const method = contract.methods[methodName];
-			const provider = window.ethereum;
+			const provider = MMSDK.getProvider();
 
 			const accounts = await provider.request({
 				method: "eth_requestAccounts",
+				params: [],
 			});
 			const account = accounts[0];
 			console.log(account);
@@ -78,7 +81,7 @@ const ContractMethods = (props) => {
 		<>
 			<div className="card-container">
 				{methods.map((method, index) => (
-					<div className="row">
+					<div className="row" key={index}>
 						<div className="col-md-12">
 							<div className="card" key={index}>
 								<div className="row">

@@ -5,8 +5,8 @@ overrides:
 
 dependencies:
   '@metamask/sdk':
-    specifier: ^0.3.2
-    version: 0.3.2(@types/react@18.2.13)(react-native@0.71.11)(react@18.2.0)
+    specifier: ^0.3.3
+    version: 0.3.3(@types/react@18.2.13)(react-native@0.71.11)(react@18.2.0)
   bootstrap:
     specifier: ^5.3.0
     version: 5.3.0(@popperjs/core@2.11.8)
@@ -2034,8 +2034,8 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: false
 
-  /@metamask/sdk-communication-layer@0.3.2:
-    resolution: {integrity: sha512-hlZSP73Rqv3ibxquVSM7D/qMsKhqg8RWwL9YgkV7w03F6mQd6ugnPnVP12P2PBFMOPHolCwY74yP0MZzIl+SNA==}
+  /@metamask/sdk-communication-layer@0.3.3:
+    resolution: {integrity: sha512-Z57SgDhv30CDAFbcsaBYqIf0R3MUMOumj6xZe1KSPoBO/JCTvA78EbSxvO/YhbTOK5bz/CNwykJxbbDCUpf9yg==}
     dependencies:
       cross-fetch: 3.1.6
       date-fns: 2.30.0
@@ -2050,8 +2050,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@metamask/sdk-install-modal-web@0.3.2(@types/react@18.2.13):
-    resolution: {integrity: sha512-NFLTpN9pPMbZEB3J92RpYjxkSnrSxQ4Jy4nnqPSKQL7sbLpZPeVKfY+wPL0RjLzmEoJZ6weVnDs408FH1fiqvw==}
+  /@metamask/sdk-install-modal-web@0.3.3(@types/react@18.2.13):
+    resolution: {integrity: sha512-YxSDtvR6jMjpu5oyqGI6omk9Y2dvIsa0tNyTP7k1dKPRzcpP7ekj1xJ6c5vZS4FlxJ908QfEMPohy2pzE8UBpQ==}
     dependencies:
       '@emotion/react': 11.11.1(@types/react@18.2.13)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.13)(react@18.2.0)
@@ -2062,8 +2062,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@metamask/sdk@0.3.2(@types/react@18.2.13)(react-native@0.71.11)(react@18.2.0):
-    resolution: {integrity: sha512-MAbBMjPTfVdg+y9s3NHcjBJ1lhv3Aj3LKrdDIPkIUPEEckPnHXhpRkYh5CVowvRH4fA+k/qTXMbvwBzym35DnQ==}
+  /@metamask/sdk@0.3.3(@types/react@18.2.13)(react-native@0.71.11)(react@18.2.0):
+    resolution: {integrity: sha512-kePMAOQ9/a14jInQwRqek4l2yKLxVCuC04S9gfhzc7/UNaHdBB38b5wYkMqhKlvrATId6vfqk4fUcvRUpyoUXw==}
     peerDependencies:
       react: ^18.2.0
       react-native: ^0.71.1
@@ -2071,8 +2071,8 @@ packages:
       '@metamask/onboarding': 1.0.1
       '@metamask/post-message-stream': 6.1.2
       '@metamask/providers': 10.2.1
-      '@metamask/sdk-communication-layer': 0.3.2
-      '@metamask/sdk-install-modal-web': 0.3.2(@types/react@18.2.13)
+      '@metamask/sdk-communication-layer': 0.3.3
+      '@metamask/sdk-install-modal-web': 0.3.3(@types/react@18.2.13)
       '@react-native-async-storage/async-storage': 1.18.2(react-native@0.71.11)
       '@types/dom-screen-wake-lock': 1.0.1
       bowser: 2.11.0
@@ -3547,8 +3547,8 @@ packages:
       is-symbol: 1.0.4
     dev: true
 
-  /esbuild-wasm@0.18.9:
-    resolution: {integrity: sha512-X1hn3PDhxc/lGY6LzxJWlre5WEklHLossTSCi8JmGY8pMb9TL9aZ2LxD5VKAiKUcQgaM45PEc7Kqz6cVf/giEQ==}
+  /esbuild-wasm@0.18.11:
+    resolution: {integrity: sha512-Xo93C8GgLSWEJH0VwU+V0bSR9lJA7zlZ8MEGZJl8HVrEvhQ4ksSROcoUXR30zITl2Iz1FINxjJwEMH3NEZaA5g==}
     engines: {node: '>=12'}
     hasBin: true
     dev: true
@@ -6024,7 +6024,7 @@ packages:
     dependencies:
       object-assign: 4.1.1
       react: 18.2.0
-      react-is: 17.0.2
+      react-is: 18.2.0
     dev: false
 
   /react@18.2.0:
@@ -6975,7 +6975,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      esbuild: /esbuild-wasm@0.18.9
+      esbuild: /esbuild-wasm@0.18.11
       postcss: 8.4.24
       rollup: 3.25.1
     optionalDependencies:

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import detectEthereumProvider from "@metamask/detect-provider";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import Swal from "sweetalert2";
+import "./ContractMethods.css";
 
 const onboarding = new MetaMaskOnboarding();
 const rpcUrl = import.meta.env.VITE_RPC_URL;
@@ -12,6 +13,8 @@ const ContractMethods = (props) => {
 	const { contractAddress, ABI: contractABI } = props;
 	const contract = new web3.eth.Contract(contractABI, contractAddress);
 	const [contractConsole, setContractConsole] = useState([]);
+	const [account, setAccount] = useState("");
+
 	useEffect(() => {
 		const methodList = contractABI.filter(
 			(item) => item.type === "function"
@@ -38,7 +41,8 @@ const ContractMethods = (props) => {
 					params: [],
 				});
 				const account = accounts[0];
-				log(`Connected with your account (${account})`, false);
+
+				setAccount(account);
 
 				if (stateMutability === "view") {
 					const result = await method(...params).call({
@@ -143,7 +147,12 @@ const ContractMethods = (props) => {
 			</div>
 			<div className="form-item">
 				<p>Console:</p>
-				<div className="card log-card">
+				<div className="log-card card">
+					{account ? (
+						<p className="log connected">
+							Connected with your account ({account})
+						</p>
+					) : null}
 					{contractConsole.map((log, index) => (
 						<p key={index} className="log">
 							{log}

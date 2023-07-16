@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import detectEthereumProvider from "@metamask/detect-provider";
+import MetaMaskOnboarding from "@metamask/onboarding";
+import Swal from "sweetalert2";
+import "./ContractMethods.css";
 
+const onboarding = new MetaMaskOnboarding();
 const rpcUrl = import.meta.env.VITE_RPC_URL;
 const web3 = new Web3(rpcUrl);
 
@@ -8,6 +13,8 @@ const ContractMethods = (props) => {
 	const { contractAddress, ABI: contractABI } = props;
 	const contract = new web3.eth.Contract(contractABI, contractAddress);
 	const [contractConsole, setContractConsole] = useState([]);
+	const [account, setAccount] = useState("");
+
 	useEffect(() => {
 		const methodList = contractABI.filter(
 			(item) => item.type === "function"
@@ -15,70 +22,83 @@ const ContractMethods = (props) => {
 		setMethods(methodList);
 	}, []);
 
-	const log = (item) => {
+	const log = (item, error) => {
+		console[error ? "error" : "log"](item);
 		setContractConsole((oldArray) => [...oldArray, item]);
 	};
+
 	const handleMethodSubmit = async (methodName, params, stateMutability) => {
-		try {
-			const method = contract.methods[methodName];
-			const provider = window.ethereum;
+		const provider = await detectEthereumProvider({ mustBeMetaMask: true });
 
-			const accounts = await provider.request({
-				method: "eth_requestAccounts",
-			});
-			const account = accounts[0];
-			console.log(account);
-
-			if (stateMutability === "view") {
-				const result = await method(...params).call({
-					from: account,
-				});
-				console.log("Method result:", result);
-				log("Method result: " + result);
-			} else {
-				const gasEstimate = await method(...params).estimateGas({
-					from: account,
-				});
-
-				const transaction = {
-					from: account,
-					to: contractAddress,
-					data: method(...params).encodeABI(),
-					gas: gasEstimate.toString(),
-					value: "0x0",
-					maxFeePerGas: "0x5F5E100",
-					maxPriorityFeePerGas: "0x5F5E100",
-					chainId: "0xaa36a7",
-				};
-
-				const result = await provider.request({
-					method: "eth_sendTransaction",
-					params: [
-						{
-							...transaction,
-							feeMarketBid: {
-								maxFeePerGas: transaction.maxFeePerGas,
-								maxPriorityFeePerGas:
-									transaction.maxPriorityFeePerGas,
-							},
-						},
-					],
-				});
-
-				console.log("Transaction receipt:", result);
-				log("Transaction receipt: " + result);
+		if (provider) {
+			if (!provider.isMetaMask) {
+				log("Please use MetaMask!", false);
 			}
-		} catch (error) {
-			console.error("Error executing method:", error);
-			log("Error executing method: " + error);
+			try {
+				const method = contract.methods[methodName];
+				const accounts = await provider.request({
+					method: "eth_requestAccounts",
+					params: [],
+				});
+				const account = accounts[0];
+
+				setAccount(account);
+
+				if (stateMutability === "view") {
+					const result = await method(...params).call({
+						from: account,
+					});
+					log("Method result: " + result, false);
+				} else {
+					const gasEstimate = await method(...params).estimateGas({
+						from: account,
+					});
+
+					const transaction = {
+						from: account,
+						to: contractAddress,
+						data: method(...params).encodeABI(),
+						gas: gasEstimate.toString(),
+						value: "0x0",
+						maxFeePerGas: "0x5F5E100",
+						maxPriorityFeePerGas: "0x5F5E100",
+						chainId: "0xaa36a7",
+					};
+
+					const result = await provider.request({
+						method: "eth_sendTransaction",
+						params: [
+							{
+								...transaction,
+								feeMarketBid: {
+									maxFeePerGas: transaction.maxFeePerGas,
+									maxPriorityFeePerGas:
+										transaction.maxPriorityFeePerGas,
+								},
+							},
+						],
+					});
+
+					log("Transaction receipt: " + result, false);
+				}
+			} catch (error) {
+				log("Error executing method: " + error, true);
+			}
+		} else {
+			console.log("Please install MetaMask!");
+			Swal.fire({
+				title: "MetaMask",
+				text: "Please install MetaMask Extenstion or App to continue!",
+				icon: "error",
+			});
+			onboarding.startOnboarding();
 		}
 	};
-
 	return (
 		<>
 			<div className="card-container">
 				{methods.map((method, index) => (
-					<div className="row">
+					<div className="row" key={index}>
 						<div className="col-md-12">
 							<div className="card" key={index}>
 								<div className="row">
@@ -127,7 +147,12 @@ const ContractMethods = (props) => {
 			</div>
 			<div className="form-item">
 				<p>Console:</p>
-				<div className="card log-card">
+				<div className="log-card card">
+					{account ? (
+						<p className="log connected">
+							Connected with your account ({account})
+						</p>
+					) : null}
 					{contractConsole.map((log, index) => (
 						<p key={index} className="log">
 							{log}
